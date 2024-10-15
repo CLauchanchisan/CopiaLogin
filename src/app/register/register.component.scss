@@ -1,0 +1,91 @@
+/* styles.css */
+form {
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  h2 {
+    text-align: center;
+  }
+  
+  label {
+    margin: 10px 0 5px;
+  }
+  
+  input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 15px;
+  }
+  
+  button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  a {
+    text-align: center;
+    display: block;
+    margin-top: 15px;
+    text-decoration: none;
+    color: #007bff;
+  }
+  
+  a:hover {
+    text-decoration: underline;
+  }
+  
+  // mensaje de error
+  /* register.component.scss */
+.error {
+    color: red;
+    margin-top: 10px;
+  }
+  
+
+  //confirmacion contraseña
+  /* register.component.scss */
+input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 15px;
+  }
+  
+
+   //imagen de fondo
+  /* login.component.scss */
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Altura completa de la ventana */
+  background-image: url('https://www.shutterstock.com/image-vector/world-weather-meteorological-forecast-aviation-600nw-1688005699.jpg'); /* Cambia esto por el enlace a tu imagen */
+  background-size: cover; /* Ajusta la imagen para cubrir toda el área */
+  background-position: right; /* Centra la imagen */
+  color: white; /* Color del texto (opcional, cambia según tu imagen) */
+}
+
+
+  //Estilizar el Contenedor del Formulario (Opcional)
+  .register-container {
+      background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro semi-transparente */
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
