@@ -1,0 +1,37 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+h2 {
+    font-size: 2.5vh;
+}
+
+.aeropuerto {
+    margin-bottom: 10px;
+}
+
+.contenedor-clima {
+    background-color: cadetblue;
+    padding: 5%;
+    margin: 5%;
+    border: 2px solid white;
+    border-radius: 30px;
+}
+
+.datos {
+    display: flex;
+    flex-direction: column;
+}
+
+span {
+    background-color: rgba(10, 102, 151, 0.508);
+    border: 2px solid white;
+    border-radius: 10px;
+    margin: 3px;
+    padding: 2%;
+}
+
+.buscador {
+    margin-top: 15px;
+}

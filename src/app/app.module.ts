@@ -15,18 +15,24 @@ import { environment } from '../environments/environment'; // Importar la config
 import { FormsModule } from '@angular/forms';
 //registro
 import { RegisterComponent } from './register/register.component';
+import { HttpClientModule } from '@angular/common/http';
+import { WeatherApiService } from './service/weather-api.service';
+import { HomeComponent } from './home/home.component';
+import { HeaderComponent } from './plantillas/header/header.component';
+import { FooterComponent } from './plantillas/footer/footer.component';
 
 @NgModule({
-  declarations: [AppComponent,LoginComponent, RegisterComponent],
+  declarations: [AppComponent,LoginComponent, RegisterComponent, HomeComponent, HeaderComponent, FooterComponent],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase), // Inicialización de Firebase
     AngularFireAuthModule, // Módulo de autenticación de Firebase
-    FormsModule //Agregado cuando aparecieron los errores
+    FormsModule, //Agregado cuando aparecieron los errores
+    HttpClientModule
   ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, WeatherApiService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

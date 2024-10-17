@@ -38,6 +38,8 @@ export class LoginComponent {
 
 import { Component } from '@angular/core';
 import { AuthService } from '../auth.service';
+import { LoadingController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -49,7 +51,18 @@ export class LoginComponent {
   password!: string;
   successMessage: string = ''; // Agregar propiedad para el mensaje de éxito
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService,
+    private loadingController: LoadingController,
+    private router: Router
+  ) {}
+  async showLoading() {
+    const loading = await this.loadingController.create({
+      message: 'Logueado correctamente! Aguarde',
+      duration: 3000,
+    });
+
+    loading.present();
+  }
 
   async login() {
     try {
@@ -57,12 +70,18 @@ export class LoginComponent {
       console.log('Usuario logueado:', user);
       // Redirigir al usuario o mostrar un mensaje aquí
 
-      this.successMessage = '¡Usuario logueado con éxito!'; // Mensaje de éxito
+      // this.successMessage = '¡Usuario logueado con éxito!'; // Mensaje de éxito
       // Aquí puedes redirigir al usuario o hacer lo que necesites
+      this.showLoading();
+
+      setTimeout(() => {
+        this.router.navigate(['/home']);
+      }, 3000);
+
 
         // Ocultar el mensaje después de 3 segundos
       setTimeout(() => {
-        this.successMessage = '';
+        this.router.navigate(['/home'])
       }, 3000);
 
     } catch (error) {

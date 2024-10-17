@@ -57,6 +57,8 @@ export class RegisterComponent {
 // register.component.ts
 import { Component } from '@angular/core';
 import { AuthService } from '../auth.service';
+import { Router } from '@angular/router';
+import { LoadingController, ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-register',
@@ -70,7 +72,28 @@ export class RegisterComponent {
   errorMessage: string = '';
   successMessage: string = '';
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private loadingController: LoadingController
+  ) {}
+
+  // async presentarToast(mensage: string) {
+  //   let toast = await this.toastController.create({
+  //     message: mensage,
+  //     duration: 3000,
+  //   });
+  //   toast.present();
+  // }
+
+  async showLoading() {
+    const loading = await this.loadingController.create({
+      message: 'Usuario creado exitosamente!',
+      duration: 3000,
+    });
+
+    loading.present();
+  }
 
   async register() {
     if (this.password !== this.confirmPassword) {
@@ -81,14 +104,18 @@ export class RegisterComponent {
 
     try {
       const user = await this.authService.register(this.email, this.password);
-      console.log('Usuario registrado:', user);
-      this.successMessage = '¡Registro exitoso! Puedes iniciar sesión ahora.';
-      this.errorMessage = '';
+      console.log('Usuario registrado:', user?.email);
+      // this.successMessage = '¡Registro exitoso! Puedes iniciar sesión ahora.';
+      // this.errorMessage = '';
+      this.showLoading();
+      setTimeout(() => {
+        this.router.navigate(['/login']);
+      }, 3000);
 
       // Oculta el mensaje de éxito después de 3 segundos
-      setTimeout(() => {
-        this.successMessage = '';
-      }, 3000);
+      // setTimeout(() => {
+      //   this.successMessage = '';
+      // }, 3000);
     } catch (error) {
       console.error('Error al registrarse:', error);
       this.errorMessage = 'Error al registrarse. Intenta nuevamente.';
@@ -96,4 +123,3 @@ export class RegisterComponent {
     }
   }
 }
-

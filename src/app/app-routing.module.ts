@@ -3,6 +3,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 //tratar de que se vean separados
 import { LoginComponent } from './login/login.component'; // Asegúrate de importar el LoginComponent
 import { RegisterComponent } from './register/register.component';
+import { HomeComponent } from './home/home.component';
 
 
 /** 
@@ -26,7 +27,9 @@ const routes: Routes = [
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: '', redirectTo: '/login', pathMatch: 'full' }, // Redirigir al login por defecto
+  { path: 'home', component: HomeComponent},
+  {path: '', redirectTo: '/home', pathMatch: 'full'}
+  // { path: '', redirectTo: '/login', pathMatch: 'full' }, // Redirigir al login por defecto
   // Otras rutas
 ];
 
