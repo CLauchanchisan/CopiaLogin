@@ -8,29 +8,24 @@
     ></ion-searchbar>
   </ion-item>
 
-  <ion-content *ngFor="let aeropuerto of aeropuertos.data">
-  <div class="contenedor-clima">
-    <div class="aeropuerto">
-      <h1>{{aeropuerto.station.name}}</h1>
-      <h2>{{aeropuerto.icao}} - {{aeropuerto.station.location}}</h2>
+  <ion-list *ngFor="let aeropuerto of aeropuertos.data">
+    <div class="contenedor-clima">
+      <div class="aeropuerto">
+        <h1>{{ aeropuerto.station.name }}</h1>
+        <h2>{{ aeropuerto.icao }} - {{ aeropuerto.station.location }}</h2>
+      </div>
+      <div class="datos">
+        <span>Temperatura: {{ aeropuerto.temperature.celsius }}°</span>
+        <span>Nubes: {{ aeropuerto.clouds[0].text }}</span>
+        <span
+          >Viento: {{ aeropuerto.wind.degrees }}°/{{
+            aeropuerto.wind.speed_kts
+          }}Kts</span>
+        <span>Visibilidad: {{ aeropuerto.visibility.meters }} Metros</span>
+        <span>Presion: {{ aeropuerto.barometer.hpa }}hPa</span>
+      </div>
     </div>
-    <div class="datos">
-      <span>Temperatura: {{aeropuerto.temperature.celsius}}°</span>
-      <span>Nubes: {{aeropuerto.clouds.text}}</span>
-      <span>Viento: {{aeropuerto.wind.degrees}}°/{{aeropuerto.wind.speed_kts}}Kts</span>
-      <span>Visibilidad: {{aeropuerto.visibility.meters}} Metros</span>
-      <span>Presion: {{aeropuerto.barometer.hpa}}hPa</span>
-    </div>
-    <!-- <h1>
-        {{aeropuerto.station.name}}
-      </h1>
-      <h2>
-        {{aeropuerto.icao}} - {{aeropuerto.station.location}}
-      </h2>
-      <label> Temperatura: {{aeropuerto.temperature.celsius}}°</label>
-      <label> Viento: {{aeropuerto.wind.degrees}}°/{{aeropuerto.wind.speed_kts}}kts</label> -->
-  </div>
-  </ion-content>
+  </ion-list>
 
   <app-footer></app-footer>
 </ion-content>

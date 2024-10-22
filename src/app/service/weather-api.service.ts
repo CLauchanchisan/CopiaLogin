@@ -13,10 +13,7 @@ export class WeatherApiService {
 
   obtenerDatos(icao: string) {
     return this.http.get(
-      'https://api.checkwx.com/metar/' +
-        icao +
-        '/decoded?x-api-key=' +
-        this.apiKey
+      'https://api.checkwx.com/metar/' + icao + '/decoded?x-api-key=' + this.apiKey
     );
   }
 }
