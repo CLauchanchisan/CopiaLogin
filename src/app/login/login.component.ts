@@ -50,6 +50,8 @@ export class LoginComponent {
   email!: string;
   password!: string;
   successMessage: string = ''; // Agregar propiedad para el mensaje de éxito
+  errorMessage: string = '';
+
 
   constructor(private authService: AuthService,
     private loadingController: LoadingController,
@@ -70,22 +72,23 @@ export class LoginComponent {
       console.log('Usuario logueado:', user);
       // Redirigir al usuario o mostrar un mensaje aquí
 
-      // this.successMessage = '¡Usuario logueado con éxito!'; // Mensaje de éxito
+      this.successMessage = '¡Usuario logueado con éxito!'; // Mensaje de éxito
       // Aquí puedes redirigir al usuario o hacer lo que necesites
       this.showLoading();
-
+      
       setTimeout(() => {
         this.router.navigate(['/home']);
       }, 3000);
-
-
-        // Ocultar el mensaje después de 3 segundos
+      
+      
+      // Ocultar el mensaje después de 3 segundos
       setTimeout(() => {
         this.router.navigate(['/home'])
       }, 3000);
-
+      
     } catch (error) {
       console.error('Error al iniciar sesión:', error);
+      this.errorMessage = 'error de usuario/contraseña'
       // Manejo de errores
     }
   }

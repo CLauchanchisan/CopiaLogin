@@ -40,7 +40,7 @@
     <button type="submit">Iniciar Sesión</button>
 
     <div *ngIf="successMessage" class="success">{{ successMessage }}</div>
-    <!-- <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div> -->
+    <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
   </form>
   <a routerLink="/register">¿No tienes una cuenta? Regístrate aquí.</a>
 </div>

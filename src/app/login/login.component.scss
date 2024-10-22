@@ -61,6 +61,19 @@ form {
     margin-top: 10px;
     position: relative;
     transition: opacity 0.5s;
+    text-align: center;
+  }
+
+  .error {
+    color: red;
+    background-color: rgba(255, 36, 61, 0.1);
+    border: 1px solid red;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+    position: relative;
+    transition: opacity 0.5s;
+    text-align: center;
   }
   
 
