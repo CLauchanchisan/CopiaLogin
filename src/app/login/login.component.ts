@@ -60,7 +60,7 @@ export class LoginComponent {
   async showLoading() {
     const loading = await this.loadingController.create({
       message: 'Logueado correctamente! Aguarde',
-      duration: 3000,
+      duration: 1000,
     });
 
     loading.present();
@@ -75,10 +75,10 @@ export class LoginComponent {
       this.successMessage = '¡Usuario logueado con éxito!'; // Mensaje de éxito
       // Aquí puedes redirigir al usuario o hacer lo que necesites
       this.showLoading();
+      this.router.navigate(['/home']);
       
-      setTimeout(() => {
-        this.router.navigate(['/home']);
-      }, 3000);
+      // setTimeout(() => {
+      // }, 3000);
       
       
       // Ocultar el mensaje después de 3 segundos
@@ -91,6 +91,15 @@ export class LoginComponent {
       this.errorMessage = 'error de usuario/contraseña'
       // Manejo de errores
     }
+  }
+
+  onClick() {
+    this.authService
+      .loginWithGoogle()
+      .then((response) => {
+        this.router.navigate(['']);
+      })
+      .catch((error) => console.log(error));
   }
 }
 

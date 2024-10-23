@@ -3,6 +3,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 // import {signOut, Auth} from '@angular/fire/auth'
 import firebase from 'firebase/compat/app';
+import {GoogleAuthProvider} from 'firebase/auth'
 
 @Injectable({
   providedIn: 'root',
@@ -60,4 +61,8 @@ export class AuthService {
     // }
     return this.afAuth.authState; // Retorna un observable con el estado del usuario
   }
+
+  loginWithGoogle(){
+    return this.afAuth.signInWithPopup(new GoogleAuthProvider);
+   }
 }

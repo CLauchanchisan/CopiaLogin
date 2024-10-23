@@ -38,6 +38,7 @@
     <input type="password" [(ngModel)]="password" name="password" required>
 
     <button type="submit">Iniciar Sesión</button>
+    <ion-button (click)="onClick()" style="color: white">Loguear con google</ion-button>
 
     <div *ngIf="successMessage" class="success">{{ successMessage }}</div>
     <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
