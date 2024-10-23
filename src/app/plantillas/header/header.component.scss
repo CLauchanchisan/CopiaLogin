@@ -8,7 +8,6 @@ ion-header {
 }
 
 
-
 ion-label  {
     height: 400px;
     background: linear-gradient(135deg, #5c6bc0 10%, #1086aa 100%);
@@ -18,8 +17,8 @@ ion-label  {
     border-radius: 25px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);//sombra
     cursor: pointer;//transforma el cursor cuando se pasa por encima
-    padding: 20px 20px;
-   
+    padding: 10px;
+    margin: 1vh;
 }
 
 ion-label:hover{
