@@ -3,6 +3,13 @@ import { WeatherApiService } from '../service/weather-api.service';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 
+interface Aerop {
+  station: {
+    name: string;
+  };
+  icao: string;
+}
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -11,6 +18,10 @@ import { Router } from '@angular/router';
 export class HomeComponent implements OnInit {
   aeropuertos: any;
   icao: string = '';
+  //isFavorite: boolean = false;
+  isFavorite: { [key: string]: boolean } = {};
+
+  aerops: Aerop[] = []; // Asume que tienes una lista de aeropuertos de la API
 
   constructor(
     public api: WeatherApiService,
@@ -61,4 +72,25 @@ export class HomeComponent implements OnInit {
       }
     });
   }
+
+  /**
+   * 
+   * @param aerop 
+   */
+  addToFavorites(aerop: Aerop) {
+    let favoritos = JSON.parse(localStorage.getItem('favoritos') || '[]');
+    const favorito = {
+      name: aerop.station.name,
+      icao: aerop.icao
+    };
+    if (!favoritos.some((fav: any) => fav.icao === aerop.icao)) {
+      favoritos.push(favorito);
+      this.isFavorite[aerop.icao] = true;
+    } else {
+      favoritos = favoritos.filter((fav: any) => fav.icao !== aerop.icao);
+      this.isFavorite[aerop.icao] = false;
+    }
+    localStorage.setItem('favoritos', JSON.stringify(favoritos));
+  }
+
 }

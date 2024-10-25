@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 
@@ -20,9 +20,10 @@ import { WeatherApiService } from './service/weather-api.service';
 import { HomeComponent } from './home/home.component';
 import { HeaderComponent } from './plantillas/header/header.component';
 import { FooterComponent } from './plantillas/footer/footer.component';
+import { FavoritesComponent } from './favorites/favorites.component';
 
 @NgModule({
-  declarations: [AppComponent,LoginComponent, RegisterComponent, HomeComponent, HeaderComponent, FooterComponent],
+  declarations: [AppComponent,LoginComponent, RegisterComponent, HomeComponent, HeaderComponent, FooterComponent,FavoritesComponent],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
@@ -34,5 +35,6 @@ import { FooterComponent } from './plantillas/footer/footer.component';
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, WeatherApiService],
   bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule {}

@@ -10,7 +10,14 @@
   <!-- </ion-item> -->
 
   <ion-list *ngFor="let aeropuerto of aeropuertos?.data">
+
     <div class="contenedor-clima">
+
+      <!-- boton de favoritos -->
+      <ion-button class="favorite-button-container" fill="clear" (click)="addToFavorites(aeropuerto)" [ngClass]="{'favorite': isFavorite[aeropuerto.icao]}">
+        <ion-icon [name]="isFavorite[aeropuerto.icao] ? 'star' : 'star-outline'"></ion-icon>
+      </ion-button>
+
       <div class="aeropuerto">
         <h1>{{ aeropuerto.station.name }}</h1>
         <h2>{{ aeropuerto.icao }} - {{ aeropuerto.station.location }}</h2>

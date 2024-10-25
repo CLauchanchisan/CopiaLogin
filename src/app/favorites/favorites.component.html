@@ -1,0 +1,20 @@
+<app-header></app-header>
+
+<ion-buttons slot="start">
+  <ion-button (click)="goHome()">
+    <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+  </ion-button>
+</ion-buttons>
+
+<ion-content>
+  <ion-list>
+    <ion-item-sliding *ngFor="let favorito of favoritos">
+      <ion-item>
+        {{ favorito.name }} ({{ favorito.icao }})
+      </ion-item>
+      <ion-item-options side="end">
+        <ion-item-option color="danger" (click)="eliminarFavorito(favorito)">Eliminar</ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+</ion-content>
