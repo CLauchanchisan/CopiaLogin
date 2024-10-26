@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { WeatherApiService } from '../service/weather-api.service';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
+import { DataService } from '../data.service';
 
 interface Aerop {
   station: {
@@ -24,6 +25,7 @@ export class HomeComponent implements OnInit {
   aerops: Aerop[] = []; // Asume que tienes una lista de aeropuertos de la API
 
   constructor(
+    private dataService: DataService,
     public api: WeatherApiService,
     private auth: AuthService,
     private router: Router
@@ -69,6 +71,20 @@ export class HomeComponent implements OnInit {
         }, );
       } else {
         console.log('NO ENTRO IF: ' + res);
+      }
+    });
+
+    // Suscríbete al ICAO en DataService
+    this.dataService.currentIcao.subscribe((icao) => {
+      if (icao) {
+        this.icao = icao;
+        this.buscar({ detail: { value: icao } });  // Llama al método de búsqueda
+      }
+    });
+
+    this.auth.getUser().subscribe((res) => {
+      if (!res) {
+        this.router.navigate(['/login']);
       }
     });
   }
