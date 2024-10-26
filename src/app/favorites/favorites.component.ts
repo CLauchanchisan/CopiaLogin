@@ -24,19 +24,27 @@ export class FavoritesComponent  implements OnInit {
     this.favoritos = JSON.parse(localStorage.getItem('favoritos') || '[]');
   }
 
+  /**
+   * @function goHome
+   * @description Navega a la pagina de inicio desde favoritos
+   */
   goHome() {
     this.router.navigate(['/home']);
   }
 
   /**
-   * para eliminar el favorito de la lista
-   * @param favoritoItem 
+   * @function eliminarFavorito
+   * @description Elimina el favorito de la lista y actualiza el localStorage
    */
   eliminarFavorito(favorito: Favorito) {
     this.favoritos = this.favoritos.filter(fav => fav.icao !== favorito.icao);
     localStorage.setItem('favoritos', JSON.stringify(this.favoritos));
   }
 
+  /**
+   * @function verFavorito
+   * @description navega al home y autocompleta el icao de busqueda, para ver el favorito
+   */
   verFavorito(icao: string) {
     this.dataService.changeIcao(icao);  // Cambia el ICAO en el servicio
     this.router.navigate(['/home']);   // Luego navega a home
