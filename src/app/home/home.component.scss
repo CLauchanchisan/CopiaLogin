@@ -7,6 +7,11 @@
   position: relative;
 }
 
+ion-content{
+
+  background-color: #0a9396;
+}
+
 h1 {
   text-align: center;
   text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);;
@@ -14,7 +19,7 @@ h1 {
 
 h2 {
   font-size: 3vh;
-  color: #005f73;
+  color: #5599ff;
   font-weight: bold;
   text-align: center;
   margin: 10px 0;
@@ -28,6 +33,7 @@ h2 {
 h2:hover {
   color: #0a9396;
   transform: scale(1.05);
+  
 }
 
 .aeropuerto {
@@ -51,6 +57,7 @@ h2:hover {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   margin-top: 10px;
   font-family: "Roboto", sans-serif;
+  
 }
 
 .datos:hover {
@@ -68,6 +75,7 @@ span {
   font-size: 1.2em;
   font-weight: bold;
   transition: background-color 0.3s;
+  
 }
 
 span:hover {
@@ -81,7 +89,8 @@ span:hover {
   width: 95%;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
   border-radius: 10px;
-  //   margin: auto;
+  margin: auto;
+  
 }
 
 ion-searchbar {
