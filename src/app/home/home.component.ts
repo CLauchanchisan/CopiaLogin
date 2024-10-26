@@ -90,8 +90,9 @@ export class HomeComponent implements OnInit {
   }
 
   /**
-   * 
-   * @param aerop 
+   * @function addToFavorites
+   * @description se ejecuta cuando el usuario haga click en la estrella de favoritos
+   * guarda el aeropuerto en el localstorage
    */
   addToFavorites(aerop: Aerop) {
     let favoritos = JSON.parse(localStorage.getItem('favoritos') || '[]');
