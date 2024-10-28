@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Metar Radar</string>
+    <string name="title_activity_main">Metar Radar</string>
+    <string name="package_name">com.metarradar.miaplicacion</string>
+    <string name="custom_url_scheme">com.metarradar.miaplicacion</string>
+</resources>
