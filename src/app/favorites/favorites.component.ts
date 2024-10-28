@@ -24,6 +24,11 @@ export class FavoritesComponent  implements OnInit {
     this.favoritos = JSON.parse(localStorage.getItem('favoritos') || '[]');
   }
 
+  //estrella deje de marcar yendo atras 
+  cargarFavoritos() {
+    this.favoritos = JSON.parse(localStorage.getItem('favoritos') || '[]');
+  }
+
   goHome() {
     this.router.navigate(['/home']);
   }
@@ -42,4 +47,14 @@ export class FavoritesComponent  implements OnInit {
     this.router.navigate(['/home']);   // Luego navega a home
   }
 
+  //estrella deje de marcar yendo atras 
+  esFavorito(icao: string): boolean {
+    return this.favoritos.some(fav => fav.icao === icao);
+  }
+
 }
+
+
+// cargarFavoritos(): Este método carga la lista de favoritos del localStorage y se llama en ngOnInit() y después de eliminar un favorito para asegurarse de que la vista se actualice.
+// esFavorito(): Este método verifica si un ítem dado es un favorito, lo que ayuda a decidir si la estrella debe estar marcada o no.
+// En tu HTML, usas ngIf para mostrar la estrella llena o vacía dependiendo de si el ítem es un favorito.

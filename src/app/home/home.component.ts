@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+
+//api
 import { WeatherApiService } from '../service/weather-api.service';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
@@ -14,6 +16,7 @@ interface Aerop {
     name: string;
   };
   icao: string;
+  //se agrego para el gps
   lat: number; // Añadir latitud del aeropuerto
   lon: number; // Añadir longitud del aeropuerto
 }
@@ -31,6 +34,7 @@ export class HomeComponent implements OnInit {
 
   aerops: Aerop[] = []; // Asume que tienes una lista de aeropuertos de la API
 
+  //se agrego para el gps
   // Propiedades para latitud y longitud
   latitud: number | null = null;  // Aquí declaras latitud
   longitud: number | null = null;  // Aquí declaras longitud
@@ -48,24 +52,10 @@ export class HomeComponent implements OnInit {
     private router: Router
   ) {}
 
-
-  buscar(event: any) {
-    this.icao = event.detail.value;
-
-    this.api.obtenerDatos(this.icao).subscribe(
-      (data) => {
-        this.aeropuertos = data;
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-  }
-
   ngOnInit() {
-    this.obtenerUbicacion(); // Llama a obtener ubicación al iniciar el componente
+    this.obtenerUbicacion(); // Llama a obtener ubicación al iniciar el componente/se agrego para el gps
     
-    // Actualiza la ubicación cada media hora (1800000 ms)
+    // Actualiza la ubicación cada media hora (1800000 ms)/se agrego para el gps
     setInterval(() => {
       this.obtenerUbicacion();
     }, 1800000);
@@ -94,28 +84,65 @@ export class HomeComponent implements OnInit {
         this.router.navigate(['/login']);
       }
     });
+
+    this.cargarFavoritos(); // Cargar los favoritos al iniciar el componente
+  }
+
+  ionViewWillEnter() {
+    // Se ejecuta cada vez que el usuario vuelve a la vista
+    this.actualizarEstadoFavoritos(); // Actualiza el estado de favoritos al regresar
+  }
+
+  //deberia ayudar a remover la estrella
+  cargarFavoritos() {
+    const favoritos = JSON.parse(localStorage.getItem('favoritos') || '[]');
+    favoritos.forEach((fav: any) => {
+      this.isFavorite[fav.icao] = true; // Marca como favorito
+    });
   }
 
   /**
    * @function addToFavorites
    * @description se ejecuta cuando el usuario haga click en la estrella de favoritos
    * guarda el aeropuerto en el localstorage
-   */
+  */
+
+  buscar(event: any) {
+    this.icao = event.detail.value;
+
+    this.api.obtenerDatos(this.icao).subscribe(
+      (data) => {
+        this.aeropuertos = data;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+
+  actualizarEstadoFavoritos() {
+    const favoritos = JSON.parse(localStorage.getItem('favoritos') || '[]');
+    this.aeropuertos?.data.forEach((aeropuerto: any) => {
+      this.isFavorite[aeropuerto.icao] = favoritos.some((fav: any) => fav.icao === aeropuerto.icao);
+    });
+  }
 
   //favoritos
   addToFavorites(aerop: Aerop) {
     let favoritos = JSON.parse(localStorage.getItem('favoritos') || '[]');
     const favorito = {
       name: aerop.station.name,
-      icao: aerop.icao
+      icao: aerop.icao,
     };
+
     if (!favoritos.some((fav: any) => fav.icao === aerop.icao)) {
       favoritos.push(favorito);
-      this.isFavorite[aerop.icao] = true;
+      this.isFavorite[aerop.icao] = true; // Actualizar el estado local
     } else {
       favoritos = favoritos.filter((fav: any) => fav.icao !== aerop.icao);
-      this.isFavorite[aerop.icao] = false;
+      this.isFavorite[aerop.icao] = false; // Actualizar el estado local
     }
+
     localStorage.setItem('favoritos', JSON.stringify(favoritos));
   }
 
@@ -160,6 +187,7 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  //funcion para traer aeropuertos desde la api
   async buscarAeropuertoMasCercano(latitud: number, longitud: number) {
     try {
       const response = await axios.get(`https://api.checkwx.com/station/lat/${latitud}/lon/${longitud}`, {
@@ -168,7 +196,7 @@ export class HomeComponent implements OnInit {
         }
       });
 
-      console.log('Respuesta de la API:', response.data); // Verifica la respuesta
+      console.log('Respuesta de la API:', response.data); // Verifica la respuesta, saber si funciona lo que esta haciendo, se muestra por consola
 
       if (Array.isArray(response.data) && response.data.length > 0) {
           this.aeropuertoCercano = response.data[0]; // Asume que el primer aeropuerto es el más cercano
@@ -189,55 +217,9 @@ export class HomeComponent implements OnInit {
 
 
 
+// Añadido ionViewWillEnter():
 
+// Este método se ejecuta cada vez que el usuario regresa a la página. Al llamarlo, actualizas el estado de los favoritos.
+// Llamada a actualizarEstadoFavoritos():
 
-
-  // async buscarAeropuertoMasCercano(latitud: number, longitud: number) {
-  //   try {
-  //     // Suponiendo que tienes una API que devuelve una lista de aeropuertos con sus coordenadas
-  //     const response = await axios.get('https://api.checkwx.com/metar/'); // Cambia esto por la URL real
-  //     const aeropuertos: Aerop[] = response.data;
-
-  //     let aeropuertoCercano: Aerop | null = null;
-  //     let distanciaMinima = Infinity; // Inicializamos con infinito
-
-  //     // Calcular la distancia
-  //     for (const aerop of aeropuertos) {
-  //       const distancia = this.calcularDistancia(latitud, longitud, aerop.lat, aerop.lon);
-  //       if (distancia < distanciaMinima) {
-  //         distanciaMinima = distancia;
-  //         aeropuertoCercano = aerop;
-  //       }
-  //     }
-
-  //     if (aeropuertoCercano) {
-  //       console.log('Aeropuerto más cercano:', aeropuertoCercano);
-  //     } else {
-  //       console.log('No se encontró ningún aeropuerto.');
-  //     }
-  //   } catch (error) {
-  //     console.error('Error obteniendo los aeropuertos', error);
-  //   }
-  // }
-
-//   // Método para calcular la distancia entre dos puntos (Haversine formula)
-//   calcularDistancia(lat1: number, lon1: number, lat2: number, lon2: number): number {
-//     const R = 6371; // Radio de la Tierra en kilómetros
-//     const dLat = this.deg2rad(lat2 - lat1);
-//     const dLon = this.deg2rad(lon2 - lon1);
-//     const a =
-//       Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-//       Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2)) *
-//       Math.sin(dLon / 2) * Math.sin(dLon / 2);
-//     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-//     const distancia = R * c; // Distancia en kilómetros
-//     return distancia;
-//   }
-
-//   // Función auxiliar para convertir grados a radianes
-//   deg2rad(deg: number): number {
-//     return deg * (Math.PI / 180);
-//   }
-// }
-
-
+// Dentro de ionViewWillEnter(), se llama a este método para que se asegure de que el estado de isFavorite esté actualizado al regresar a la página de inicio.

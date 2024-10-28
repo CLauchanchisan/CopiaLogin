@@ -9,6 +9,7 @@ import { AuthService } from 'src/app/auth.service';
 export class HeaderComponent implements OnInit {
   constructor(private auth: AuthService) {}
 
+  //desloguear
   onClick() {
     this.auth.logout();
   }

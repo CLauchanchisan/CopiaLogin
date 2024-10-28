@@ -10,7 +10,14 @@
   <ion-list>
     <ion-item-sliding *ngFor="let favorito of favoritos">
       <ion-item>
-        {{ favorito.name }} ({{ favorito.icao }})
+        <ion-label>
+          {{ favorito.name }} ({{ favorito.icao }})
+        </ion-label>
+        <ion-icon 
+          [name]="esFavorito(favorito.icao) ? 'star' : 'star-outline'" 
+          slot="end" 
+          color="primary">
+        </ion-icon>
       </ion-item>
       <!-- botón eliminar -->
       <ion-item-options side="end">
@@ -23,7 +30,6 @@
           Ver
         </ion-item-option>
       </ion-item-options>
-
     </ion-item-sliding>
   </ion-list>
 </ion-content>

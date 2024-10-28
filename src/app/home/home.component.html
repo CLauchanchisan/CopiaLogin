@@ -18,10 +18,12 @@
         <ion-icon [name]="isFavorite[aeropuerto.icao] ? 'star' : 'star-outline'"></ion-icon>
       </ion-button>
 
+      <!-- nombres de aeropuertos -->
       <div class="aeropuerto">
         <h1>{{ aeropuerto.station.name }}</h1>
         <h2>{{ aeropuerto.icao }} - {{ aeropuerto.station.location }}</h2>
       </div>
+      <!-- lista cuando usas el buscador -->
       <div class="datos">
         <span>Temperatura: {{ aeropuerto.temperature.celsius }}°</span>
         <span>Nubes: {{ aeropuerto.clouds[0].text }}</span>
@@ -37,15 +39,6 @@
   </ion-list>
 
   <ion-button (click)="obtenerUbicacion()">Obtener Ubicación</ion-button>
-  
-  <!-- <div *ngIf="latitud !== null && longitud !== null">
-    <p>Latitud: {{ latitud }}</p>
-    <p>Longitud: {{ longitud }}</p>
-  </div>
-
-  <div *ngIf="!latitud && !longitud">
-    <p>Ubicación no disponible.</p>
-  </div> -->
 
   <div *ngIf="pais && provincia">
     <p>País: {{ pais }}</p>
@@ -56,22 +49,20 @@
     <p>Ubicación no disponible.</p>
   </div>
 
-  <!-- <div>
-    <h3>Aeropuerto más cercano:</h3>
-    <p *ngIf="aeropuertoCercano">Nombre: {{ aeropuertoCercano.station.name }}</p>
-    <p *ngIf="aeropuertoCercano">ICAO: {{ aeropuertoCercano.icao }}</p>
-  </div> -->
-
   <div *ngIf="aeropuertoCercano; else noAeropuertoCercano">
     <h2>Aeropuerto más cercano</h2>
-    <p>Nombre: {{ aeropuertoCercano.station.name }}</p>
-    <p>ICAO: {{ aeropuertoCercano.icao }}</p>
-    <p>Latitud: {{ aeropuertoCercano.lat }}</p>
-    <p>Longitud: {{ aeropuertoCercano.lon }}</p>
-</div>
+    <div class="contenedor-clima">
+      <p>Nombre: {{ aeropuertoCercano.station.name }}</p>
+      <p>ICAO: {{ aeropuertoCercano.icao }}</p>
+      <p>Latitud: {{ aeropuertoCercano.lat }}</p>
+      <p>Longitud: {{ aeropuertoCercano.lon }}</p>
+    </div>
+  </div>
 
-<ng-template #noAeropuertoCercano>
-    <h2>No se encontró un aeropuerto cercano</h2>
-</ng-template>
+  <ng-template #noAeropuertoCercano>
+    <div class="no-aeropuerto">
+      <h2>No se encontró un aeropuerto cercano</h2>
+    </div>
+  </ng-template>
 </ion-content>
 <app-footer></app-footer>
