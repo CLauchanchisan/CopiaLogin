@@ -146,3 +146,53 @@ ion-button.favorite ion-icon {
     transform: translate
   }
 }
+
+/* Contenedor para la sección de ubicación */
+.ubicacion-container {
+  margin-top: 20px; /* Espaciado superior para separar de otros elementos */
+  text-align: center; /* Centrar el contenido */
+}
+
+/* Estilo del botón para obtener ubicación */
+.ubicacion-button {
+  //background-color: #4CAF50; /* Color verde */
+  color: white; /* Texto blanco */
+  border-radius: 25px; /* Bordes redondeados */
+  padding: 12px 25px; /* Espaciado interno */
+  font-size: 20px; /* Tamaño de fuente */
+  display: flex; /* Para alinear icono y texto */
+  align-items: center; /* Centrar el icono verticalmente */
+  transition: background-color 0.3s, transform 0.2s; /* Transiciones suaves */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para efecto 3D */
+}
+
+/* Efecto al pasar el mouse sobre el botón */
+.ubicacion-button:hover {
+  //background-color: #e4e9e5; /* Color más oscuro al pasar el mouse */
+  transform: scale(1.05); /* Efecto de aumento */
+}
+
+/* Estilos para la información de ubicación */
+.ubicacion-info {
+  margin-top: 15px; /* Espaciado superior para la información */
+  font-size: 16px; /* Tamaño de fuente */
+  color: #333; /* Color de texto */
+  background-color: #e0f7fa; /* Fondo claro */
+  padding: 15px; /* Espaciado interno */
+  border-radius: 10px; /* Bordes redondeados */
+  border: 1px solid #81d4fa; /* Borde sutil */
+  transition: transform 0.2s; /* Transición suave */
+}
+
+/* Efecto de aumento para la información al mostrarse */
+.ubicacion-info:hover {
+  transform: scale(1.02); /* Efecto de aumento */
+}
+
+/* Estilos para el mensaje de error */
+.ubicacion-error {
+  margin-top: 15px; /* Espaciado superior para el error */
+  font-size: 16px; /* Tamaño de fuente */
+  color: #d9534f; /* Color de error */
+  font-weight: bold; /* Negrita para mayor énfasis */
+}

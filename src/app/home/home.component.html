@@ -22,6 +22,7 @@
       <div class="aeropuerto">
         <h1>{{ aeropuerto.station.name }}</h1>
         <h2>{{ aeropuerto.icao }} - {{ aeropuerto.station.location }}</h2>
+
       </div>
       <!-- lista cuando usas el buscador -->
       <div class="datos">
@@ -38,24 +39,28 @@
     </div>
   </ion-list>
 
-  <ion-button (click)="obtenerUbicacion()">Obtener Ubicación</ion-button>
-
-  <div *ngIf="pais && provincia">
-    <p>País: {{ pais }}</p>
-    <p>Provincia: {{ provincia }}</p>
-  </div>
-
-  <div *ngIf="!pais && !provincia">
-    <p>Ubicación no disponible.</p>
-  </div>
+  <div class="ubicacion-container">
+    <ion-button class="ubicacion-button" (click)="mostrarUbicacion = true; obtenerUbicacion()">
+      <ion-icon name="location-outline" slot="start"></ion-icon>
+      Obtener Ubicación
+    </ion-button>
+  
+    <div *ngIf="mostrarUbicacion && pais && provincia" class="ubicacion-info">
+      <p><strong>País:</strong> {{ pais }}</p>
+      <p><strong>Provincia:</strong> {{ provincia }}</p>
+    </div>
+  
+    <div *ngIf="mostrarUbicacion && (!pais && !provincia)" class="ubicacion-error">
+      <p>Ubicación no disponible.</p>
+    </div>
 
   <div *ngIf="aeropuertoCercano; else noAeropuertoCercano">
-    <h2>Aeropuerto más cercano</h2>
+    <h2>Aeropuerto más cercano: </h2>
     <div class="contenedor-clima">
-      <p>Nombre: {{ aeropuertoCercano.station.name }}</p>
+      <p>Nombre: {{ aeropuertoCercano.station ? aeropuertoCercano.station.name : 'Desconocido' }}</p>
       <p>ICAO: {{ aeropuertoCercano.icao }}</p>
-      <p>Latitud: {{ aeropuertoCercano.lat }}</p>
-      <p>Longitud: {{ aeropuertoCercano.lon }}</p>
+      <p>Ciudad: {{ aeropuertoCercano.city }}</p>
+      <p>País: {{ aeropuertoCercano.country.name }}</p>
     </div>
   </div>
 
@@ -64,5 +69,15 @@
       <h2>No se encontró un aeropuerto cercano</h2>
     </div>
   </ng-template>
+</div>
+  
+  <!-- <div *ngIf="latitud !== null && longitud !== null" class="ubicacion-info">
+    <p>Latitud: {{ latitud }}</p>
+    <p>Longitud: {{ longitud }}</p>
+  </div>
+   -->
+  
 </ion-content>
 <app-footer></app-footer>
+
+<!-- "navegación segura" (?.) para acceder a las propiedades de aeropuertoCercano. Esto evitará que Angular intente leer propiedades de un objeto undefined: -->

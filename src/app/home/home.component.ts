@@ -11,14 +11,27 @@ import { Geolocation } from '@capacitor/geolocation';
 //ver pais y provincia
 import axios from 'axios';
 
+//esto muestra lo de interface aerop
+interface Country {
+  code: string;
+  name: string;
+}
+
+interface Coordinates {
+  decimal: number;
+  degrees: string;
+}
+
 interface Aerop {
   station: {
     name: string;
   };
   icao: string;
+  city: string; // Ciudad del aeropuerto
+  country: Country; // País del aeropuerto
   //se agrego para el gps
-  lat: number; // Añadir latitud del aeropuerto
-  lon: number; // Añadir longitud del aeropuerto
+  latitude: Coordinates; // Latitud con diferentes formatos
+  longitude: Coordinates; // Longitud con diferentes formatos
 }
 
 @Component({
@@ -42,6 +55,9 @@ export class HomeComponent implements OnInit {
   // Propiedades para país y provincia
   pais: string | null = null;  // Aquí declaras país
   provincia: string | null = null;  // Aquí declaras provincia
+
+  // Propiedad para controlar la visibilidad de la ubicación
+  mostrarUbicacion: boolean = false;  // Agregar esta línea
 
   aeropuertoCercano: Aerop | null = null; // Propiedad para el aeropuerto más cercano
 
@@ -188,31 +204,55 @@ export class HomeComponent implements OnInit {
   }
 
   //funcion para traer aeropuertos desde la api
-  async buscarAeropuertoMasCercano(latitud: number, longitud: number) {
-    try {
-      const response = await axios.get(`https://api.checkwx.com/station/lat/${latitud}/lon/${longitud}`, {
-        headers: {
-          'X-API-Key': "ca21f8d774f04976b299456461" // Reemplaza con tu clave API real api key clau
-        }
-      });
-
-      console.log('Respuesta de la API:', response.data); // Verifica la respuesta, saber si funciona lo que esta haciendo, se muestra por consola
-
-      if (Array.isArray(response.data) && response.data.length > 0) {
-          this.aeropuertoCercano = response.data[0]; // Asume que el primer aeropuerto es el más cercano
-          console.log('Aeropuerto más cercano:', this.aeropuertoCercano);
-      } else {
-        console.log('No se encontró ningún aeropuerto.');
+ // Función para traer aeropuertos desde la API
+ async buscarAeropuertoMasCercano(latitud: number, longitud: number) {
+  try {
+    const response = await axios.get(`https://api.checkwx.com/station/lat/${latitud}/lon/${longitud}/?filter=A`, {
+      headers: {
+        'X-API-Key': "ca21f8d774f04976b299456461" // Asegúrate de que la clave API sea correcta
       }
-    } catch (error: any) {
-        if (axios.isAxiosError(error)) {
-            console.error('Error obteniendo el aeropuerto más cercano:', error.response ? error.response.data : error.message);
-        } else {
-            console.error('Error desconocido:', error);
-        }
-    }
- }
+    });
 
+    console.log('Respuesta de la API:', response.data); // Verifica la respuesta
+
+    // Verifica si hay resultados
+    if (response.data.results > 0 && Array.isArray(response.data.data) && response.data.data.length > 0) {
+      const aeropuerto = response.data.data[0]; // Accede al primer aeropuerto en el array
+
+      // Asignar los valores de forma adecuada
+      this.aeropuertoCercano = {
+        station: {
+          name: aeropuerto.name, // Nombre del aeropuerto
+        },
+        icao: aeropuerto.icao, // Código ICAO
+        city: aeropuerto.city, // Ciudad
+        country: {
+          code: aeropuerto.country.code, // Código del país
+          name: aeropuerto.country.name, // Nombre del país
+        },
+        latitude: {
+          decimal: aeropuerto.latitude.decimal, // Latitud decimal
+          degrees: aeropuerto.latitude.degrees, // Latitud en grados
+        },
+        longitude: {
+          decimal: aeropuerto.longitude.decimal, // Longitud decimal
+          degrees: aeropuerto.longitude.degrees, // Longitud en grados
+        },
+      } as Aerop; // Asegúrate de que esto se asemeje a tu interfaz Aerop
+
+      console.log('Aeropuerto más cercano:', this.aeropuertoCercano);
+    } else {
+      console.log('No se encontró ningún aeropuerto.');
+      this.aeropuertoCercano = null; // Asegúrate de limpiar la variable si no se encuentra un aeropuerto
+    }
+  } catch (error: any) {
+    if (axios.isAxiosError(error)) {
+      console.error('Error obteniendo el aeropuerto más cercano:', error.response ? error.response.data : error.message);
+    } else {
+      console.error('Error desconocido:', error);
+    }
+  }
+}
 }
 
 
