@@ -28,16 +28,18 @@ h2 {
   padding: 5px;
   border-radius: 10px;
   transition: all 0.3s ease;
+  //background: linear-gradient(135deg, #5c6bc0 10%, #1086aa 100%);
 }
 
 h2:hover {
   color: #0a9396;
-  transform: scale(1.05);
+  //transform: scale(1.05);
   
 }
 
 .aeropuerto {
   margin-bottom: 10px;
+  //background: linear-gradient(135deg, #5c6bc0 10%, #1086aa 100%);
 }
 
 .contenedor-clima {
@@ -46,6 +48,7 @@ h2:hover {
   margin: 5%;
   border: 2px solid white;
   border-radius: 30px;
+  
 }
 
 .datos {
@@ -90,7 +93,7 @@ span:hover {
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
   border-radius: 10px;
   margin: auto;
-  
+
 }
 
 ion-searchbar {
@@ -174,12 +177,12 @@ ion-button.favorite ion-icon {
 
 /* Estilos para la información de ubicación */
 .ubicacion-info {
+  display: flex;
+  flex-direction: column; /* Alinea los elementos verticalmente */
   margin-top: 15px; /* Espaciado superior para la información */
   font-size: 16px; /* Tamaño de fuente */
   color: #333; /* Color de texto */
   background-color: #e0f7fa; /* Fondo claro */
-  padding: 15px; /* Espaciado interno */
-  border-radius: 10px; /* Bordes redondeados */
   border: 1px solid #81d4fa; /* Borde sutil */
   transition: transform 0.2s; /* Transición suave */
 }
@@ -196,3 +199,31 @@ ion-button.favorite ion-icon {
   color: #d9534f; /* Color de error */
   font-weight: bold; /* Negrita para mayor énfasis */
 }
+
+.cerrar-ubicacion {
+  align-self: flex-end; /* Alinea el botón "X" a la derecha */
+  background: none;
+  border: none;
+  color: #ff3d00; /* Color rojo para la "X" */
+  font-size: 20px;
+  cursor: pointer;
+  position: left;
+  top: 10px; /* Ajusta según sea necesario */
+  right: 10px; /* Ajusta según sea necesario */
+}
+
+
+//revisar
+// ion-list{
+  
+//   background-image: url('https://static.vecteezy.com/system/resources/thumbnails/009/662/653/small_2x/cloud-isolated-on-black-background-png.png');
+//   background-position: left;
+//   background-size: cover; /* Ajusta la imagen para cubrir toda el área */
+// }
+// div{
+//  // background-color: #fff;
+// }
+
+// header{
+//   background-color: #fff;
+// }

@@ -11,7 +11,7 @@ import { Geolocation } from '@capacitor/geolocation';
 //ver pais y provincia
 import axios from 'axios';
 
-//esto muestra lo de interface aerop
+//Interfaces para tipado de datos
 interface Country {
   code: string;
   name: string;
@@ -40,11 +40,10 @@ interface Aerop {
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
+  // Propiedades relacionadas con el usuario y autenticación
   aeropuertos: any;
   icao: string = '';
-  //isFavorite: boolean = false;
   isFavorite: { [key: string]: boolean } = {};
-
   aerops: Aerop[] = []; // Asume que tienes una lista de aeropuertos de la API
 
   //se agrego para el gps
@@ -58,8 +57,8 @@ export class HomeComponent implements OnInit {
 
   // Propiedad para controlar la visibilidad de la ubicación
   mostrarUbicacion: boolean = false;  // Agregar esta línea
-
-  aeropuertoCercano: Aerop | null = null; // Propiedad para el aeropuerto más cercano
+  // Propiedad para el aeropuerto más cercano
+  aeropuertoCercano: Aerop | null = null; 
 
   constructor(
     private dataService: DataService,
@@ -69,60 +68,54 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.verificarUsuario();
     this.obtenerUbicacion(); // Llama a obtener ubicación al iniciar el componente/se agrego para el gps
-    
-    // Actualiza la ubicación cada media hora (1800000 ms)/se agrego para el gps
-    setInterval(() => {
-      this.obtenerUbicacion();
-    }, 1800000);
-  
-    this.auth.getUser().subscribe((res) => {
-      if (!res) {
-        console.log('ENTRO IF: ' + res);
-        setTimeout(() => {
-          this.router.navigate(['/login']);
-        }, );
-      } else {
-        console.log('NO ENTRO IF: ' + res);
-      }
-    });
+    this.cargarFavoritos(); // Cargar los favoritos al iniciar el componente
+    this.suscribirCambioIcao();
 
-    // Suscríbete al ICAO en DataService
-    this.dataService.currentIcao.subscribe((icao) => {
-      if (icao) {
-        this.icao = icao;
-        this.buscar({ detail: { value: icao } });  // Llama al método de búsqueda
-      }
-    });
+    // Actualizar ubicación cada media hora/se agrego para el gps
+    setInterval(() => this.obtenerUbicacion(), 1800000);
+  }
+   /**
+   * @function ionViewWillEnter
+   * @description  Se ejecuta cada vez que el usuario vuelve a la vista
+   * Este método se ejecuta cada vez que el usuario regresa a la página. Al llamarlo, actualizas el estado de los favoritos.
+   * Llamada a actualizarEstadoFavoritos():
+   * Dentro de ionViewWillEnter(), se llama a este método para que se asegure de que el estado de isFavorite esté actualizado al regresar a la página de inicio.
+   */
+  ionViewWillEnter() {
+    this.actualizarEstadoFavoritos();// Actualiza el estado de favoritos al regresar
+  }
 
+  /**
+   * @function verificarUsuario
+   * @description Verifica si el usuario está autenticado y redirige si no lo está.
+   */
+  verificarUsuario() {
     this.auth.getUser().subscribe((res) => {
       if (!res) {
         this.router.navigate(['/login']);
       }
     });
-
-    this.cargarFavoritos(); // Cargar los favoritos al iniciar el componente
   }
 
-  ionViewWillEnter() {
-    // Se ejecuta cada vez que el usuario vuelve a la vista
-    this.actualizarEstadoFavoritos(); // Actualiza el estado de favoritos al regresar
-  }
-
-  //deberia ayudar a remover la estrella
-  cargarFavoritos() {
-    const favoritos = JSON.parse(localStorage.getItem('favoritos') || '[]');
-    favoritos.forEach((fav: any) => {
-      this.isFavorite[fav.icao] = true; // Marca como favorito
+  /**
+   * @function suscribirCambioIcao
+   * @description Suscribe al cambio de ICAO en DataService.
+   */
+  suscribirCambioIcao() {
+    this.dataService.currentIcao.subscribe((icao) => {
+      if (icao) {
+        this.icao = icao;
+        this.buscar({ detail: { value: icao } });
+      }
     });
   }
 
   /**
-   * @function addToFavorites
-   * @description se ejecuta cuando el usuario haga click en la estrella de favoritos
-   * guarda el aeropuerto en el localstorage
-  */
-
+   * @function buscar
+   * @description Busca información de un aeropuerto basado en el código ICAO.
+   */
   buscar(event: any) {
     this.icao = event.detail.value;
 
@@ -131,11 +124,26 @@ export class HomeComponent implements OnInit {
         this.aeropuertos = data;
       },
       (error) => {
-        console.log(error);
+        console.error('Error en búsqueda:', error);
       }
     );
   }
 
+  /**
+   * @function cargarFavoritos
+   * @description Carga los aeropuertos favoritos desde el almacenamiento local.
+   */
+  cargarFavoritos() {
+    const favoritos = JSON.parse(localStorage.getItem('favoritos') || '[]');
+    favoritos.forEach((fav: any) => {
+      this.isFavorite[fav.icao] = true; // Marca como favorito
+    });
+  }
+
+  /**
+   * @function actualizarEstadoFavoritos
+   * @description Actualiza el estado de favoritos cuando se regresa a la vista.
+   */
   actualizarEstadoFavoritos() {
     const favoritos = JSON.parse(localStorage.getItem('favoritos') || '[]');
     this.aeropuertos?.data.forEach((aeropuerto: any) => {
@@ -143,17 +151,19 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  //favoritos
+   /**
+   * @function addToFavorites
+   * @description se ejecuta cuando el usuario haga click en la estrella de favoritos
+   * guarda el aeropuerto en el localstorage
+   * Agrega o quita un aeropuerto de los favoritos.
+  */
   addToFavorites(aerop: Aerop) {
     let favoritos = JSON.parse(localStorage.getItem('favoritos') || '[]');
-    const favorito = {
-      name: aerop.station.name,
-      icao: aerop.icao,
-    };
+    const favorito = { name: aerop.station.name, icao: aerop.icao };
 
     if (!favoritos.some((fav: any) => fav.icao === aerop.icao)) {
       favoritos.push(favorito);
-      this.isFavorite[aerop.icao] = true; // Actualizar el estado local
+      this.isFavorite[aerop.icao] = true;
     } else {
       favoritos = favoritos.filter((fav: any) => fav.icao !== aerop.icao);
       this.isFavorite[aerop.icao] = false; // Actualizar el estado local
@@ -162,104 +172,87 @@ export class HomeComponent implements OnInit {
     localStorage.setItem('favoritos', JSON.stringify(favoritos));
   }
 
-
-  //gps
+  /**
+   * @function obtenerUbicacion
+   * @description Obtiene la ubicación GPS del usuario.
+   */
   async obtenerUbicacion() {
     try {
       const coordinates = await Geolocation.getCurrentPosition();
       this.latitud = coordinates.coords.latitude;
       this.longitud = coordinates.coords.longitude;
-      console.log('Latitud:', this.latitud);
-      console.log('Longitud:', this.longitud);
+      console.log('Latitud:', this.latitud, 'Longitud:', this.longitud);
 
-      // Llama a obtenerDireccion con las coordenadas
       await this.obtenerDireccion(this.latitud, this.longitud);
-
-      // Busca el aeropuerto más cercano
       await this.buscarAeropuertoMasCercano(this.latitud, this.longitud);
-    
+
     } catch (error) {
       console.error('Error obteniendo la ubicación', error);
     }
   }
 
-  // Función para obtener la dirección a partir de latitud y longitud
+  /**
+   * @function obtenerDireccion
+   * @description Obtiene la dirección (país y provincia) basándose en la latitud y longitud.
+   */
   async obtenerDireccion(latitud: number, longitud: number) {
     try {
       const response = await axios.get(`https://nominatim.openstreetmap.org/reverse`, {
-        params: {
-          lat: latitud,
-          lon: longitud,
-          format: 'json'
-        }
+        params: { lat: latitud, lon: longitud, format: 'json' }
       });
-
       this.pais = response.data.address.country;
       this.provincia = response.data.address.state || response.data.address.prov;
-      console.log('País:', this.pais);
-      console.log('Provincia:', this.provincia);
+      console.log('País:', this.pais, 'Provincia:', this.provincia);
+
     } catch (error) {
       console.error('Error obteniendo la dirección', error);
     }
   }
 
-  //funcion para traer aeropuertos desde la api
- // Función para traer aeropuertos desde la API
- async buscarAeropuertoMasCercano(latitud: number, longitud: number) {
-  try {
-    const response = await axios.get(`https://api.checkwx.com/station/lat/${latitud}/lon/${longitud}/?filter=A`, {
-      headers: {
-        'X-API-Key': "ca21f8d774f04976b299456461" // Asegúrate de que la clave API sea correcta
+  /**
+   * @function buscarAeropuertoMasCercano
+   * @description Busca el aeropuerto más cercano a la ubicación actual.
+   */
+  async buscarAeropuertoMasCercano(latitud: number, longitud: number) {
+    try {
+      const response = await axios.get(`https://api.checkwx.com/station/lat/${latitud}/lon/${longitud}/?filter=A`, {
+        headers: { 'X-API-Key': "ca21f8d774f04976b299456461" }
+      });
+      // Verifica si hay resultados
+      if (response.data.results > 0 && Array.isArray(response.data.data) && response.data.data.length > 0) {
+        const aeropuerto = response.data.data[0]; // Accede al primer aeropuerto en el array
+
+        this.aeropuertoCercano = {
+          station: { name: aeropuerto.name },
+          icao: aeropuerto.icao,
+          city: aeropuerto.city,
+          country: { code: aeropuerto.country.code, name: aeropuerto.country.name },
+          latitude: { decimal: aeropuerto.latitude.decimal, degrees: aeropuerto.latitude.degrees },
+          longitude: { decimal: aeropuerto.longitude.decimal, degrees: aeropuerto.longitude.degrees },
+        } as Aerop;
+
+        console.log('Aeropuerto más cercano:', this.aeropuertoCercano);
+      } else {
+        console.log('No se encontró ningún aeropuerto.');
+        this.aeropuertoCercano = null;
       }
-    });
 
-    console.log('Respuesta de la API:', response.data); // Verifica la respuesta
-
-    // Verifica si hay resultados
-    if (response.data.results > 0 && Array.isArray(response.data.data) && response.data.data.length > 0) {
-      const aeropuerto = response.data.data[0]; // Accede al primer aeropuerto en el array
-
-      // Asignar los valores de forma adecuada
-      this.aeropuertoCercano = {
-        station: {
-          name: aeropuerto.name, // Nombre del aeropuerto
-        },
-        icao: aeropuerto.icao, // Código ICAO
-        city: aeropuerto.city, // Ciudad
-        country: {
-          code: aeropuerto.country.code, // Código del país
-          name: aeropuerto.country.name, // Nombre del país
-        },
-        latitude: {
-          decimal: aeropuerto.latitude.decimal, // Latitud decimal
-          degrees: aeropuerto.latitude.degrees, // Latitud en grados
-        },
-        longitude: {
-          decimal: aeropuerto.longitude.decimal, // Longitud decimal
-          degrees: aeropuerto.longitude.degrees, // Longitud en grados
-        },
-      } as Aerop; // Asegúrate de que esto se asemeje a tu interfaz Aerop
-
-      console.log('Aeropuerto más cercano:', this.aeropuertoCercano);
-    } else {
-      console.log('No se encontró ningún aeropuerto.');
-      this.aeropuertoCercano = null; // Asegúrate de limpiar la variable si no se encuentra un aeropuerto
+    } catch (error: any) {
+      if (axios.isAxiosError(error)) {
+        console.error('Error obteniendo el aeropuerto más cercano:', error.response ? error.response.data : error.message);
+      } else {
+        console.error('Error desconocido:', error);
+      }
     }
-  } catch (error: any) {
-    if (axios.isAxiosError(error)) {
-      console.error('Error obteniendo el aeropuerto más cercano:', error.response ? error.response.data : error.message);
-    } else {
-      console.error('Error desconocido:', error);
+  }
+  //cerrar ubicacion
+  toggleUbicacion() {
+    this.mostrarUbicacion = !this.mostrarUbicacion;
+    if (this.mostrarUbicacion) {
+      this.obtenerUbicacion();
     }
   }
 }
-}
 
 
 
-// Añadido ionViewWillEnter():
-
-// Este método se ejecuta cada vez que el usuario regresa a la página. Al llamarlo, actualizas el estado de los favoritos.
-// Llamada a actualizarEstadoFavoritos():
-
-// Dentro de ionViewWillEnter(), se llama a este método para que se asegure de que el estado de isFavorite esté actualizado al regresar a la página de inicio.
