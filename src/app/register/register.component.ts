@@ -55,7 +55,7 @@ export class RegisterComponent {
 
     } catch (error) {
       console.error('Error al registrarse:', error);
-      this.showToast('Error al registrarse. Intenta nuevamente.', 'danger');
+      this.showToast('Ingrese un mail válido', 'danger');
     }
   }
 }

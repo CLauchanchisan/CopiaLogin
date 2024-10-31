@@ -2,19 +2,19 @@
 <ion-content>
 
   <!-- <ion-item class="buscador"> -->
-  <ion-searchbar
-    placeholder="BUSCAR ICAO"
-    (ionChange)="buscar($event)"
-    class="buscador"
-  ></ion-searchbar>
-  <!-- </ion-item> -->
+  <div style="display: flex; align-items: center; flex-direction: column;">
+    <ion-searchbar placeholder="BUSCAR ICAO" (ionChange)="buscar($event)" class="buscador"></ion-searchbar>
+    <ion-label style="padding: 1vh; margin: 1vh; border-radius: 1vh; background-color: #5599ff;">Puede ingresar más de uno separado por " , "</ion-label>
+    <!-- </ion-item> -->
+  </div>
 
   <ion-list *ngFor="let aeropuerto of aeropuertos?.data">
 
     <div class="contenedor-clima">
 
       <!-- boton de favoritos -->
-      <ion-button class="favorite-button-container" fill="clear" (click)="addToFavorites(aeropuerto)" [ngClass]="{'favorite': isFavorite[aeropuerto.icao]}">
+      <ion-button class="favorite-button-container" fill="clear" (click)="addToFavorites(aeropuerto)"
+        [ngClass]="{'favorite': isFavorite[aeropuerto.icao]}">
         <ion-icon [name]="isFavorite[aeropuerto.icao] ? 'star' : 'star-outline'"></ion-icon>
       </ion-button>
 
@@ -40,7 +40,7 @@
       <ion-icon name="location-outline" slot="start"></ion-icon>
       Obtener Ubicación
     </ion-button>
-  
+
     <div *ngIf="mostrarUbicacion" class="ubicacion-info">
       <button class="cerrar-ubicacion" (click)="mostrarUbicacion = false">
         <ion-icon name="close-circle" slot="end"></ion-icon>
@@ -58,7 +58,7 @@
         </div>
       </div>
     </div>
-  
+
     <div *ngIf="mostrarUbicacion && (!pais && !provincia)" class="ubicacion-error">
       <p>Ubicación no disponible.</p>
     </div>
