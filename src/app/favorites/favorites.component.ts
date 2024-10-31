@@ -1,27 +1,27 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { DataService } from '../data.service';
+import { AuthService } from '../auth.service';
 
 interface Favorito {
   name: string;
   icao: string;
 }
 
-
 @Component({
   selector: 'app-favorites',
   templateUrl: './favorites.component.html',
   styleUrls: ['./favorites.component.scss'],
 })
-export class FavoritesComponent  implements OnInit {
-
+export class FavoritesComponent implements OnInit {
   favoritos: Favorito[] = [];
   //icao: string = '';
-  
-  constructor(private router: Router,private dataService: DataService) { }
+
+  constructor(private router: Router, private dataService: DataService, private auth: AuthService) {}
 
   ngOnInit() {
     this.favoritos = JSON.parse(localStorage.getItem('favoritos') || '[]');
+    this.verificarUsuario();
   }
 
   /**
@@ -39,20 +39,20 @@ export class FavoritesComponent  implements OnInit {
   /**
    * @function eliminarFavorito
    * @description para eliminar el favorito de la lista
-   * @param favoritoItem 
+   * @param favoritoItem
    */
   eliminarFavorito(favorito: Favorito) {
-    this.favoritos = this.favoritos.filter(fav => fav.icao !== favorito.icao);
+    this.favoritos = this.favoritos.filter((fav) => fav.icao !== favorito.icao);
     localStorage.setItem('favoritos', JSON.stringify(this.favoritos));
   }
 
-   /**
+  /**
    * @function verFavorito
    * @description Vuelve a mostrar la informacion de los favoritos guardados
    */
   verFavorito(icao: string) {
-    this.dataService.changeIcao(icao);  // Cambia el ICAO en el servicio
-    this.router.navigate(['/home']);   // Luego navega a home
+    this.dataService.changeIcao(icao); // Cambia el ICAO en el servicio
+    this.router.navigate(['/home']); // Luego navega a home
   }
 
   /**
@@ -60,9 +60,14 @@ export class FavoritesComponent  implements OnInit {
    * @description Este método verifica si un ítem dado es un favorito, lo que ayuda a decidir si la estrella debe estar marcada o no.
    */
   esFavorito(icao: string): boolean {
-    return this.favoritos.some(fav => fav.icao === icao);
+    return this.favoritos.some((fav) => fav.icao === icao);
   }
 
+  verificarUsuario() {
+    this.auth.getUser().subscribe((res) => {
+      if (!res) {
+        this.router.navigate(['/login']);
+      }
+    });
+  }
 }
-
-
