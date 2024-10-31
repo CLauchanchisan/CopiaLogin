@@ -67,10 +67,10 @@ export class LoginComponent {
   onClick() {
     this.authService
       .loginWithGoogle()
-      .then((response) => {
-        this.router.navigate(['']);
-      })
-      .catch((error) => console.log(error));
+      // .then((response) => {
+      //   this.router.navigate(['']);
+      // })
+      // .catch((error) => console.log(error));
   }
 }
 

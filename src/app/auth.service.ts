@@ -77,6 +77,6 @@ export class AuthService {
    * @description Poder loguearse con Google
    */
   loginWithGoogle(){
-    return this.afAuth.signInWithPopup(new GoogleAuthProvider);
+    return this.afAuth.signInWithPopup(new GoogleAuthProvider()).then((res: any) => {this.router.navigate([''])});
    }
 }

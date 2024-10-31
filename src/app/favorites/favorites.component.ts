@@ -63,6 +63,11 @@ export class FavoritesComponent implements OnInit {
     return this.favoritos.some((fav) => fav.icao === icao);
   }
 
+   /**
+   * @function verificarUsuario
+   * @description Verifica que el usuario esté logueado
+   */
+
   verificarUsuario() {
     this.auth.getUser().subscribe((res) => {
       if (!res) {
