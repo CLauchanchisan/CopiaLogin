@@ -20,8 +20,12 @@ export class RegisterComponent {
     private router: Router,
     private loadingController: LoadingController,
     private toastController: ToastController
-  ) {}
-  //alerta error
+  ) { }
+
+  /**
+ * @function showLoading
+ * @description Cartel de aviso de creacion exitosa de usuario 
+ */
   async showLoading() {
     const loading = await this.loadingController.create({
       message: 'Usuario creado exitosamente!',
@@ -29,7 +33,10 @@ export class RegisterComponent {
     });
     await loading.present();
   }
-
+  /**
+ * @function showToast
+ * @description alerta error
+ */
   async showToast(message: string, color: 'danger' | 'success') {
     const toast = await this.toastController.create({
       message,
@@ -39,6 +46,10 @@ export class RegisterComponent {
     toast.present();
   }
 
+  /**
+ * @function register
+ * @description Registro de usuario y validacion de contraseñas
+ */
   async register() {
     if (this.password !== this.confirmPassword) {
       this.errorMessage = 'Las contraseñas no coinciden.'; // Validación de coincidencia

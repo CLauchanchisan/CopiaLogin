@@ -11,7 +11,10 @@ import {GoogleAuthProvider} from 'firebase/auth'
 export class AuthService {
   constructor(private afAuth: AngularFireAuth, private router: Router) {}
 
-  // Método para registrar un nuevo usuario
+   /**
+   * @function register
+   * @description Método para registrar un nuevo usuario
+   */
   async register(email: string, password: string) {
     try {
       const userCredential = await this.afAuth.createUserWithEmailAndPassword(
@@ -24,8 +27,10 @@ export class AuthService {
       throw error; // Lanza el error para manejarlo en el componente
     }
   }
-
-  // Método para iniciar sesión
+  /**
+   * @function login
+   * @description Método para iniciar sesión
+   */
   async login(email: string, password: string) {
     try {
       const userCredential = await this.afAuth.signInWithEmailAndPassword(
@@ -38,8 +43,10 @@ export class AuthService {
       throw error; // Lanza el error para manejarlo en el componente
     }
   }
-
-  // Método para cerrar sesión
+  /**
+   * @function logout
+   * @description Método para cerrar sesión
+   */
   async logout() {
     // try {
     //   await this.afAuth.signOut();
@@ -54,7 +61,10 @@ export class AuthService {
       .catch((error) => console.log(error));
   }
 
-  // Método para obtener el estado de autenticación del usuario
+   /**
+   * @function getUser
+   * @description Método para obtener el estado de autenticación del usuario
+   */
   getUser() {
     // if (this.afAuth.authState) {
     //   this.router.navigate(['/login']);
@@ -62,6 +72,10 @@ export class AuthService {
     return this.afAuth.authState; // Retorna un observable con el estado del usuario
   }
 
+  /**
+   * @function loginWithGoogle
+   * @description Poder loguearse con Google
+   */
   loginWithGoogle(){
     return this.afAuth.signInWithPopup(new GoogleAuthProvider);
    }

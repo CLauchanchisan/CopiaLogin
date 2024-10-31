@@ -1,29 +1,10 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-//tratar de que se vean separados
+//tratar de que se vean separados Login y registro
 import { LoginComponent } from './login/login.component'; // Asegúrate de importar el LoginComponent
 import { RegisterComponent } from './register/register.component';
 import { HomeComponent } from './home/home.component';
 import { FavoritesComponent } from './favorites/favorites.component';
-
-
-/** 
-const routes: Routes = [
-  {
-    path: 'home',
-    loadChildren: () => import('./home/home.module').then(m => m.HomePageModule)
-  },
-  {
-    path: 'login', // Ruta para el componente de login
-    component: LoginComponent // Especifica que el componente a cargar es LoginComponent
-  },
-  {
-    path: '',
-    redirectTo: 'login', // Redirige a login en lugar de home
-    pathMatch: 'full'
-  },
-];
-*/
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },

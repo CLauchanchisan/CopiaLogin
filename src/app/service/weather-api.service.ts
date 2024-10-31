@@ -11,6 +11,10 @@ export class WeatherApiService {
 
   constructor(public http: HttpClient) {}
 
+  /**
+ * @function obtenerDatos
+ * @description Obtener datos a traves de la API
+ */
   obtenerDatos(icao: string) {
     return this.http.get(
       'https://api.checkwx.com/metar/' + icao + '/decoded?x-api-key=' + this.apiKey

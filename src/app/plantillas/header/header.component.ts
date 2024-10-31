@@ -7,12 +7,15 @@ import { AuthService } from 'src/app/auth.service';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
-  constructor(private auth: AuthService) {}
+  constructor(private auth: AuthService) { }
 
-  //desloguear
+  /**
+ * @function onClick
+ * @description Metodo para poder desloguear
+ */
   onClick() {
     this.auth.logout();
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 }

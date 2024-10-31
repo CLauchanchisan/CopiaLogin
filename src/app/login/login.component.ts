@@ -18,7 +18,12 @@ export class LoginComponent {
   constructor(private authService: AuthService,
     private loadingController: LoadingController,
     private router: Router
-  ) {}
+  ) { }
+
+   /**
+  * @function showLoading
+  * @description Cartel de logueo exitoso
+  */
   async showLoading() {
     const loading = await this.loadingController.create({
       message: 'Logueado correctamente! Aguarde',
@@ -28,6 +33,10 @@ export class LoginComponent {
     loading.present();
   }
 
+  /**
+  * @function login
+  * @description Contiene los mensajes de exito y error cuando logueamos nuestros usuarios
+  */
   async login() {
     try {
       const user = await this.authService.login(this.email, this.password);
@@ -38,12 +47,12 @@ export class LoginComponent {
       // Aquí puedes redirigir al usuario o hacer lo que necesites
       this.showLoading();
       this.router.navigate(['/home']);
-      
+
       // Ocultar el mensaje después de 3 segundos
       setTimeout(() => {
         this.router.navigate(['/home'])
       }, 3000);
-      
+
     } catch (error) {
       console.error('Error al iniciar sesión:', error);
       this.errorMessage = 'error de usuario/contraseña'
@@ -51,6 +60,10 @@ export class LoginComponent {
     }
   }
 
+  /**
+ * @function onClick
+ * @description Metodo para poder Loguear con Google
+ */
   onClick() {
     this.authService
       .loginWithGoogle()
