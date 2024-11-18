@@ -12,6 +12,7 @@ import { Geolocation } from '@capacitor/geolocation';
 import axios from 'axios';
 
 //Interfaces para tipado de datos
+// Al definir estas interfaces, puedes asegurar que las propiedades de los objetos que manejas sigan una estructura específica, y el compilador de TypeScript detectará errores si los datos no cumplen con esa estructura.
 interface Country {
   code: string;
   name: string;
@@ -75,6 +76,7 @@ export class HomeComponent implements OnInit {
 
     // Actualizar ubicación cada media hora/se agrego para el gps
     setInterval(() => this.obtenerUbicacion(), 1800000);
+    //llamadas a las funciones al iniciar el componente
   }
    /**
    * @function ionViewWillEnter
@@ -86,10 +88,10 @@ export class HomeComponent implements OnInit {
   ionViewWillEnter() {
     this.actualizarEstadoFavoritos();// Actualiza el estado de favoritos al regresar
   }
-
+  
   /**
    * @function verificarUsuario
-   * @description Verifica si el usuario está autenticado y redirige si no lo está.
+   * @description Verifica si el usuario está autenticado y redirige si no lo está , redirige a la pantalla de login.
    */
   verificarUsuario() {
     this.auth.getUser().subscribe((res) => {
@@ -194,12 +196,14 @@ export class HomeComponent implements OnInit {
   /**
    * @function obtenerDireccion
    * @description Obtiene la dirección (país y provincia) basándose en la latitud y longitud.
+   * Esta es una función async que utiliza axios para hacer una solicitud HTTP a la API de OpenStreetMap y obtener la ubicación geográfica (país y provincia) a partir de coordenadas de latitud y longitud
    */
   async obtenerDireccion(latitud: number, longitud: number) {
     try {
       const response = await axios.get(`https://nominatim.openstreetmap.org/reverse`, {
         params: { lat: latitud, lon: longitud, format: 'json' }
-      });
+      });//await axios.get(...): Hace una solicitud GET de forma asíncrona a la URL de la API de OpenStreetMap (https://nominatim.openstreetmap.org/reverse). await se usa para esperar a que la solicitud termine antes de seguir ejecutando el resto de la función.
+
       this.pais = response.data.address.country;
       this.provincia = response.data.address.state || response.data.address.prov;
       console.log('País:', this.pais, 'Provincia:', this.provincia);
@@ -209,14 +213,17 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  
+
   /**
    * @function buscarAeropuertoMasCercano
    * @description Busca el aeropuerto más cercano a la ubicación actual.
+   * utiliza la API de CheckWX para encontrar el aeropuerto más cercano a las coordenadas proporcionadas.
    */
   async buscarAeropuertoMasCercano(latitud: number, longitud: number) {
     try {
       const response = await axios.get(`https://api.checkwx.com/station/lat/${latitud}/lon/${longitud}/?filter=A`, {
-        headers: { 'X-API-Key': "ca21f8d774f04976b299456461" }
+        headers: { 'X-API-Key': "ca21f8d774f04976b299456461" }//apikey clau
       });
       // Verifica si hay resultados
       if (response.data.results > 0 && Array.isArray(response.data.data) && response.data.data.length > 0) {
@@ -245,7 +252,10 @@ export class HomeComponent implements OnInit {
       }
     }
   }
-  //cerrar ubicacion
+   /**
+   * @function toggleUbicacion
+   * @description Metodo para cerrar ubicacion.
+   */
   toggleUbicacion() {
     this.mostrarUbicacion = !this.mostrarUbicacion;
     if (this.mostrarUbicacion) {

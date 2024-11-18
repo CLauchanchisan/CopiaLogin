@@ -1,4 +1,8 @@
 <app-header></app-header>
+
+<!-- <app-header></app-header> y <app-footer></app-footer>: Estos componentes, generalmente, contienen la cabecera y el pie de página de la aplicación.
+<ion-content>: Contenedor de contenido principal en Ionic que permite un desplazamiento suave y proporciona una experiencia de usuario similar a la de una aplicación móvil. -->
+
 <ion-content>
 
   <!-- <ion-item class="buscador"> -->
@@ -8,7 +12,12 @@
     <!-- </ion-item> -->
   </div>
 
+  <!-- Aquí tienes una barra de búsqueda (<ion-searchbar>) donde los usuarios pueden ingresar códigos ICAO (identificadores de aeropuertos). Cada vez que el usuario escribe algo, el evento (ionChange)="buscar($event)" llama a la función buscar() en el archivo TypeScript. -->
+
+
   <ion-list *ngFor="let aeropuerto of aeropuertos?.data">
+
+    <!-- Utiliza *ngFor para iterar sobre los aeropuertos obtenidos y mostrar su información. -->
 
     <div class="contenedor-clima">
 
@@ -17,6 +26,8 @@
         [ngClass]="{'favorite': isFavorite[aeropuerto.icao]}">
         <ion-icon [name]="isFavorite[aeropuerto.icao] ? 'star' : 'star-outline'"></ion-icon>
       </ion-button>
+
+      <!-- Utiliza un botón (<ion-button>) que al hacer clic llama a addToFavorites(aeropuerto). El ícono de estrella cambia según si el aeropuerto está marcado como favorito, controlado por la variable isFavorite. -->
 
       <!-- nombres de aeropuertos -->
       <div class="aeropuerto">
@@ -41,12 +52,16 @@
       Obtener Ubicación
     </ion-button>
 
+    <!-- <ion-button>: Muestra un botón que al hacer clic llama a la función toggleUbicacion(), que probablemente activa o desactiva la visualización de la información de ubicación. -->
+
     <div *ngIf="mostrarUbicacion" class="ubicacion-info">
       <button class="cerrar-ubicacion" (click)="mostrarUbicacion = false">
         <ion-icon name="close-circle" slot="end"></ion-icon>
       </button>
       <p *ngIf="pais"><strong>País:</strong> {{ pais }}</p>
       <p *ngIf="provincia"><strong>Provincia:</strong> {{ provincia }}</p>
+
+      <!-- *ngIf="mostrarUbicacion": Muestra esta sección solo si mostrarUbicacion es verdadero. -->
 
       <div *ngIf="aeropuertoCercano; else noAeropuertoCercano">
         <div class="contenedor-clima">
@@ -58,6 +73,13 @@
         </div>
       </div>
     </div>
+    <!-- //Nombre del Aeropuerto: Usa el operador ? : (operador ternario) para verificar si aeropuertoCercano.station existe. Si station es null o undefined, se muestra "Desconocido"; de lo contrario, se muestra el nombre del aeropuerto. -->
+
+    <!-- aeropuertoCercano.station ? aeropuertoCercano.station.name : 'Desconocido': Este es el operador ternario de JavaScript y TypeScript, que se usa para evaluar una condición y devolver un valor dependiendo de si la condición es verdadera o falsa.
+    Estructura: condición ? valor_si_verdadero : valor_si_falso
+    Condición: aeropuertoCercano.station
+    Si aeropuertoCercano.station existe y no es null o undefined, la expresión devuelve aeropuertoCercano.station.name.
+    Si aeropuertoCercano.station no existe (es null o undefined), devuelve el valor alternativo 'Desconocido'. -->
 
     <div *ngIf="mostrarUbicacion && (!pais && !provincia)" class="ubicacion-error">
       <p>Ubicación no disponible.</p>
@@ -75,3 +97,6 @@
 
 
 <!-- "navegación segura" (?.) para acceder a las propiedades de aeropuertoCercano. Esto evitará que Angular intente leer propiedades de un objeto undefined: -->
+<!-- *ngIf se utiliza para condicionar la visualización de un elemento. -->
+<!-- *ngFor: Repite el elemento para cada ítem en una lista.
+*ngIf: Muestra o esconde el elemento basado en una condición booleana. -->

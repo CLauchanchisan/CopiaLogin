@@ -3,6 +3,17 @@ apply plugin: 'com.android.application'
 android {
     namespace "com.metarradar.miaplicacion"
     compileSdk rootProject.ext.compileSdkVersion
+
+
+  signingConfigs {
+    release {
+      storeFile file("C:/Users/Claudia/Documents/my-keystore.keystore") // Ruta al keystore
+      storePassword "123456" //
+      keyAlias "my-alias" // Alias de la clave
+      keyPassword "123456"
+    }
+  }
+
     defaultConfig {
         applicationId "com.metarradar.miaplicacion"
         minSdkVersion rootProject.ext.minSdkVersion

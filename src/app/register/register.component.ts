@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../auth.service';
+
+import { AuthService } from '../auth.service';//Servicio que contiene la lógica para registrar usuarios.
+
 import { Router } from '@angular/router';
 import { LoadingController, ToastController } from '@ionic/angular';
 
@@ -8,6 +10,7 @@ import { LoadingController, ToastController } from '@ionic/angular';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
 })
+//Propiedades del Componente
 export class RegisterComponent {
   email!: string;
   password!: string;
@@ -35,7 +38,7 @@ export class RegisterComponent {
   }
   /**
  * @function showToast
- * @description alerta error
+ * @description Este método muestra una notificación (toast) con un mensaje personalizado y un color que indica si fue un éxito o un error (danger para errores y success para éxito).
  */
   async showToast(message: string, color: 'danger' | 'success') {
     const toast = await this.toastController.create({
@@ -49,6 +52,8 @@ export class RegisterComponent {
   /**
  * @function register
  * @description Registro de usuario y validacion de contraseñas
+ * Intenta registrar al usuario usando authService.register. Si el registro es exitoso, llama a showLoading() y redirige al usuario a la página de inicio de sesión (/login) después de 3 segundos.
+ * Si hay un error durante el registro, se muestra un mensaje de error con showToast.
  */
   async register() {
     if (this.password !== this.confirmPassword) {
