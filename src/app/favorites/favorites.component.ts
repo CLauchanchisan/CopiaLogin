@@ -45,7 +45,8 @@ export class FavoritesComponent implements OnInit {
   /**
    * @function eliminarFavorito
    * @description para eliminar el favorito de la lista
-   * @param favoritoItem 
+   *  Este método elimina un favorito de la lista al filtrar el arreglo de favoritos por el icao del favorito que se desea eliminar. Luego, actualiza localStorage para persistir la nueva lista de favoritos.
+   * @param favoritoItem
    */
   eliminarFavorito(favorito: Favorito) {
     this.favoritos = this.favoritos.filter((fav) => fav.icao !== favorito.icao);
@@ -71,6 +72,17 @@ export class FavoritesComponent implements OnInit {
     return this.favoritos.some((fav) => fav.icao === icao);
   }
 
+   /**
+   * @function verificarUsuario
+   * @description Verifica que el usuario esté logueado
+   * Este método verifica si el usuario está autenticado mediante el servicio AuthService. Si no está autenticado, redirige a la página de login.
+   */
+
+  verificarUsuario() {
+    this.auth.getUser().subscribe((res) => {
+      if (!res) {
+        this.router.navigate(['/login']);
+      }
+    });
+  }
 }
-
-
